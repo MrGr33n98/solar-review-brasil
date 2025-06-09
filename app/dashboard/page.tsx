@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from 'next/link';
 import { ContactRequest } from "@/types";
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -24,7 +27,7 @@ export default function DashboardPage() {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const pageSize = 10;
 
   useEffect(() => {
