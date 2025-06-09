@@ -31,7 +31,7 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const company = companies.find(c => c.id === params.id);
+  const company = companies.find((c) => c.id === params.id);
   if (!company) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
@@ -42,14 +42,13 @@ export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
 ) {
-  const index = companies.findIndex(c => c.id === params.id);
-  if (index === -1) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  }
-
   try {
     const data = await req.json();
     const parsed = updateSchema.parse(data);
+    const index = companies.findIndex((c) => c.id === params.id);
+    if (index === -1) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
     const updated: Company = { ...companies[index], ...parsed };
     companies[index] = updated;
     return NextResponse.json(updated);
@@ -62,11 +61,10 @@ export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const index = companies.findIndex(c => c.id === params.id);
+  const index = companies.findIndex((c) => c.id === params.id);
   if (index === -1) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
-
-  companies.splice(index, 1);
-  return NextResponse.json({ success: true });
+  const removed = companies.splice(index, 1)[0];
+  return NextResponse.json(removed);
 }

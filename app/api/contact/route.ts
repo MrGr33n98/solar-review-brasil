@@ -23,3 +23,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
   }
 }
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+
+  const data = contactRequests.slice(start, end);
+  return NextResponse.json({ data, total: contactRequests.length });
+}
