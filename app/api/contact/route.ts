@@ -4,17 +4,24 @@ import { ContactRequest } from '@/types';
 import { contactRequests } from '@/lib/contacts';
 
 export async function POST(request: Request) {
-  const data = await request.json();
-  
-  const newRequest: ContactRequest = {
-    id: uuidv4(),
-    createdAt: new Date(),
-    ...data
-  };
-
-  contactRequests.push(newRequest);
-
-  return NextResponse.json({ success: true, data: newRequest });
+  try {
+    const body = await request.json();
+    const newRequest: ContactRequest = {
+      id: uuidv4(),
+      ...body,
+      createdAt: new Date(),
+      status: 'pending'
+    };
+    
+    contactRequests.push(newRequest);
+    
+    return NextResponse.json(newRequest, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to create contact request' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function GET(request: Request) {
