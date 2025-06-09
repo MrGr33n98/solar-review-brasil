@@ -1,41 +1,50 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 
-const schema = z.object({
+const loginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha obrigatória')
+  password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres')
 });
 
-type Inputs = z.infer<typeof schema>;
-
 export default function LoginPage() {
-  const [error, setError] = useState<string | null>(null);
-  const form = useForm<Inputs>({ resolver: zodResolver(schema) });
-
-  const onSubmit = async (values: Inputs) => {
-    setError(null);
-    const res = await signIn('credentials', {
-      redirect: false,
-      email: values.email,
-      password: values.password
-    });
-    if (res?.error) {
-      setError('Credenciais inválidas');
+  const router = useRouter();
+  const [error, setError] = useState('');
+  
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: ''
     }
-  };
+  });
+
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    const result = await signIn('credentials', {
+      ...values,
+      redirect: false
+    });
+
+    if (result?.error) {
+      setError('Credenciais inválidas');
+    } else {
+      router.push('/dashboard');
+    }
+  }
 
   return (
     <div className="container mx-auto py-10">
-      <div className="max-w-md mx-auto space-y-4">
+      <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -43,34 +52,34 @@ export default function LoginPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-mail</FormLabel>
                   <FormControl>
-                    <Input type="email" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input type="password" placeholder="Senha" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full">Entrar</Button>
+            
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            
+            <Button type="submit" className="w-full">
+              Entrar
+            </Button>
           </form>
         </Form>
-        <Button onClick={() => signIn('google')} variant="outline" className="w-full">
-          Entrar com Google
-        </Button>
       </div>
     </div>
   );
