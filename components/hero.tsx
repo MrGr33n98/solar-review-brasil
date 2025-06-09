@@ -18,8 +18,15 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-20">
-      <div className="container mx-auto px-4">
+    <section
+      className="relative bg-gray-900 py-20 bg-center bg-cover"
+      style={{
+        backgroundImage:
+          "url('https://images.pexels.com/photos/2800832/pexels-photo-2800832.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+      }}
+    >
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Encontre as Melhores Empresas de Energia Solar
