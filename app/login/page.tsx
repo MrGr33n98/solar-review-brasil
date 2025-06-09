@@ -20,11 +20,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   
   const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: ''
-    }
+    resolver: zodResolver(loginSchema)
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
@@ -44,7 +40,6 @@ export default function LoginPage() {
     <div className="container mx-auto py-10">
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
-        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -59,7 +54,6 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="password"
@@ -72,12 +66,8 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            
-            <Button type="submit" className="w-full">
-              Entrar
-            </Button>
+            <Button type="submit" className="w-full">Entrar</Button>
           </form>
         </Form>
       </div>
