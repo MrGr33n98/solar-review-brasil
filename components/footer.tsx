@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { Sun, Mail, Phone, MapPin } from 'lucide-react';
+import { Sun, Mail } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="border-t">
+    <footer className="border-t bg-gray-900">
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
+            <Link href="/" className="flex items-center space-x-2 mb-4" aria-label="Ir para página inicial">
               <div className="bg-gradient-to-r from-blue-500 to-orange-500 p-2 rounded-lg">
                 <Sun className="h-6 w-6 text-white" />
               </div>
@@ -30,7 +30,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Links Rápidos</h3>
+            <h2 className="text-lg font-semibold mb-4 text-white">Links Rápidos</h2>
             <ul className="space-y-2">
               <li>
                 <Link href="/empresas" className="text-gray-400 hover:text-white transition-colors">
@@ -57,7 +57,7 @@ export function Footer() {
 
           {/* For Companies */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Para Empresas</h3>
+            <h2 className="text-lg font-semibold mb-4 text-white">Para Empresas</h2>
             <ul className="space-y-2">
               <li>
                 <Link href="/empresa/cadastro" className="text-gray-400 hover:text-white transition-colors">
@@ -80,23 +80,6 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">
-            © 2024 SolarReviews Brasil. Todos os direitos reservados.
-          </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/termos" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Termos de Uso
-            </Link>
-            <Link href="/privacidade" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Política de Privacidade
-            </Link>
-            <Link href="/cookies" className="text-gray-400 hover:text-white text-sm transition-colors">
-              Cookies
-            </Link>
           </div>
         </div>
       </div>
