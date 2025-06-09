@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, Star, Award, Users, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BannerCarousel } from '@/components/banner-carousel';
@@ -10,15 +11,17 @@ import { GoogleSearch } from '@/components/google-search';
 import { companies } from '@/lib/data';
 
 export default function Home() {
-  const premiumCompanies = companies.filter(company => 
+  const premiumCompanies = companies.filter(company =>
     company.planType === 'premium' || company.planType === 'enterprise'
   );
 
+  const router = useRouter();
+
   const handleSearch = (query: string, location?: string) => {
-    // In a real app, this would navigate to search results
-    console.log('Search:', query, 'Location:', location);
-    // For now, redirect to companies page
-    window.location.href = `/empresas?q=${encodeURIComponent(query)}${location ? `&location=${encodeURIComponent(location)}` : ''}`;
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (location) params.set('location', location);
+    router.push(`/empresas?${params.toString()}`);
   };
 
   return (
