@@ -27,9 +27,7 @@ export default function CompaniesPage() {
     const ratingParam = searchParams.get('rating');
     const planParam = searchParams.get('plan');
 
-    if (q) {
-      setSearchTerm(q);
-    }
+    if (q) setSearchTerm(q);
     
     const loc = locationParam || stateParam;
     if (loc) {
@@ -38,20 +36,12 @@ export default function CompaniesPage() {
         loc.toLowerCase().includes(state.code.toLowerCase()) ||
         loc.toLowerCase().includes(state.name.toLowerCase())
       );
-      if (matchedState) {
-        setSelectedState(matchedState.code);
-      }
+      if (matchedState) setSelectedState(matchedState.code);
     }
 
-    if (specialtyParam) {
-      setSelectedSpecialty(specialtyParam);
-    }
-    if (ratingParam) {
-      setMinRating(ratingParam);
-    }
-    if (planParam) {
-      setPlanFilter(planParam);
-    }
+    if (specialtyParam) setSelectedSpecialty(specialtyParam);
+    if (ratingParam) setMinRating(ratingParam);
+    if (planParam) setPlanFilter(planParam);
   }, [searchParams]);
 
   // Get unique specialties
