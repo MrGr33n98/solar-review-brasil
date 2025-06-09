@@ -52,3 +52,12 @@ export interface SolarCalculation {
   estimatedSavings: number;
   paybackPeriod: number;
 }
+export interface ContactRequest {
+  id: string;
+  companyId?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  createdAt: string;
+}

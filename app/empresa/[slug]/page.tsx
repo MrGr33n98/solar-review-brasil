@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin, Phone, Globe, Calendar, Award, Users, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ContactForm } from '@/components/contact-form';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RatingStars } from '@/components/rating-stars';
@@ -187,9 +189,19 @@ export default function CompanyPage({ params }: CompanyPageProps) {
                 <CardTitle>Entre em Contato</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button className="w-full bg-orange-500 hover:bg-orange-600">
-                  Solicitar Orçamento
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full bg-orange-500 hover:bg-orange-600">
+                      Solicitar Orçamento
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Solicitar Orçamento</DialogTitle>
+                    </DialogHeader>
+                    <ContactForm companyId={company.id} />
+                  </DialogContent>
+                </Dialog>
                 {company.phone && (
                   <Button variant="outline" className="w-full">
                     <Phone className="h-4 w-4 mr-2" />
