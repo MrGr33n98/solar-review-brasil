@@ -34,6 +34,8 @@ export interface SponsoredContent {
   id: string;
   companyId: string;
   position: 'home_top' | 'category_sidebar' | 'home_banner';
+  /** Optional city this content targets */
+  city?: string;
   imageUrl: string;
   title: string;
   subtitle?: string;
