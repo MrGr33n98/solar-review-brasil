@@ -29,6 +29,12 @@ canonical URLs for pages. When running locally this defaults to
 `http://localhost:3000`. Set it to the public URL of your deployment in
 `.env.local` or your hosting provider's settings.
 
+For uploading images you also need AWS credentials and bucket details:
+
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` – credentials for an IAM user
+- `AWS_REGION` – region of your S3 bucket
+- `S3_BUCKET_NAME` – name of the bucket used for uploads
+
 ## Project Structure
 
 - **app/** - Next.js route handlers and pages

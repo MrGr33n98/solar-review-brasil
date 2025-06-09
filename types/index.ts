@@ -57,4 +57,13 @@ export interface ContactRequest {
   companyId?: string;
   message: string;
   createdAt: Date;
+  status: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  companyId?: string;
 }

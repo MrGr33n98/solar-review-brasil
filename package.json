@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
+    "@aws-sdk/client-s3": "^3.826.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@prisma/client": "^6.9.0",
@@ -46,6 +47,7 @@
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -78,7 +80,11 @@
   "devDependencies": {
     "@types/uuid": "^10.0.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "prisma": "^5.12.1"
+=======
+    "prisma": "^6.9.0"
+>>>>>>> 47715febea6c5a1898bd7e425f4ea290613e7f73
 =======
     "prisma": "^6.9.0",
     "ts-node": "^10.9.1"
