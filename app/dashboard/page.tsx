@@ -1,61 +1,48 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { ContactRequest } from '@/types';
-import { companies } from '@/lib/data';
+import { useEffect, useState } from "react";
+import { ContactRequest } from "@/types";
+import { Input } from "@/components/ui/input";
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Input } from '@/components/ui/input';
+  PaginationNext,
+} from "@/components/ui/pagination";
 
 export default function DashboardPage() {
-  const [contacts, setContacts] = useState<ContactRequest[]>([]);
-  const [search, setSearch] = useState('');
+  const [requests, setRequests] = useState<ContactRequest[]>([]);
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState("");
+  const pageSize = 10;
 
   useEffect(() => {
-    fetch('/api/contact')
-      .then((res) => res.json())
-      .then((data) => setContacts(data));
-  }, []);
+    loadRequests();
+  }, [page, search]);
 
-  const getCompanyName = (id?: string) => {
-    if (!id) return 'N/A';
-    const company = companies.find((c) => c.id === id);
-    return company ? company.name : 'N/A';
+  const loadRequests = async () => {
+    const res = await fetch(
+      `/api/contact?page=${page}&pageSize=${pageSize}&search=${search}`
+    );
+    if (res.ok) {
+      const json = await res.json();
+      setRequests(json.data);
+      setTotal(json.total);
+    }
   };
 
-  const filtered = contacts.filter((c) => {
-    const company = getCompanyName(c.companyId);
-    const target = `${c.name} ${c.email} ${c.message} ${company}`.toLowerCase();
-    return target.includes(search.toLowerCase());
-  });
-
-  const totalPages = Math.ceil(filtered.length / perPage) || 1;
-  const displayed = filtered.slice((page - 1) * perPage, page * perPage);
-
-  const changePage = (p: number) => {
-    if (p < 1 || p > totalPages) return;
-    setPage(p);
-  };
-
-  useEffect(() => {
-    setPage(1);
-  }, [search]);
+  const pageCount = Math.ceil(total / pageSize);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -63,7 +50,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold mb-6">Dashboard de Contatos</h1>
         <div className="mb-4 max-w-sm">
           <Input
-            placeholder="Filtrar por nome, email ou empresa..."
+            placeholder="Filtrar por nome ou email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -74,25 +61,34 @@ export default function DashboardPage() {
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Empresa</TableHead>
                 <TableHead>Mensagem</TableHead>
                 <TableHead>Data</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {displayed.map((req) => (
+              {requests.map((req) => (
                 <TableRow key={req.id}>
                   <TableCell>{req.name}</TableCell>
                   <TableCell>{req.email}</TableCell>
-                  <TableCell>{getCompanyName(req.companyId)}</TableCell>
-                  <TableCell className="max-w-xs break-words">{req.message}</TableCell>
-                  <TableCell>{new Date(req.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell className="max-w-xs break-words">
+                    {req.message}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(req.createdAt).toLocaleDateString()}
+                  </TableCell>
                 </TableRow>
               ))}
+              {requests.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center py-8">
+                    Nenhuma solicitação encontrada
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
-        {totalPages > 1 && (
+        {pageCount > 1 && (
           <Pagination className="mt-4">
             <PaginationContent>
               <PaginationItem>
@@ -100,22 +96,22 @@ export default function DashboardPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    changePage(page - 1);
+                    setPage((p) => Math.max(1, p - 1));
                   }}
-                  className={page === 1 ? 'pointer-events-none opacity-50' : ''}
+                  className={page === 1 ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                <PaginationItem key={p}>
+              {Array.from({ length: pageCount }).map((_, i) => (
+                <PaginationItem key={i}>
                   <PaginationLink
                     href="#"
-                    isActive={p === page}
+                    isActive={i + 1 === page}
                     onClick={(e) => {
                       e.preventDefault();
-                      changePage(p);
+                      setPage(i + 1);
                     }}
                   >
-                    {p}
+                    {i + 1}
                   </PaginationLink>
                 </PaginationItem>
               ))}
@@ -124,9 +120,11 @@ export default function DashboardPage() {
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    changePage(page + 1);
+                    setPage((p) => Math.min(pageCount, p + 1));
                   }}
-                  className={page === totalPages ? 'pointer-events-none opacity-50' : ''}
+                  className={
+                    page === pageCount ? "pointer-events-none opacity-50" : ""
+                  }
                 />
               </PaginationItem>
             </PaginationContent>
