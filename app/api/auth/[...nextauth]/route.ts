@@ -1,33 +1,50 @@
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/lib/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { users } from '@/lib/users';
+import bcrypt from 'bcrypt';
 
 const handler = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
     CredentialsProvider({
+      name: 'credentials',
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Senha', type: 'password' }
       },
       async authorize(credentials) {
-        const user = users.find(
-          u => u.email === credentials?.email && u.password === credentials?.password
-        );
-        if (user) {
-          return { id: user.id, name: user.name, email: user.email };
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Credenciais inválidas');
         }
-        return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email }
+        });
+
+        if (!user || !user.hashedPassword) {
+          throw new Error('Usuário não encontrado');
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        );
+
+        if (!isPasswordValid) {
+          throw new Error('Senha incorreta');
+        }
+
+        return user;
       }
     })
   ],
   pages: {
     signIn: '/login',
-    error: '/error',
+    error: '/auth/error'
+  },
+  session: {
+    strategy: 'jwt'
   }
 });
 
