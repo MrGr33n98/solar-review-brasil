@@ -32,17 +32,14 @@ export interface Review {
 
 export interface SponsoredContent {
   id: string;
-  companyId: string;
-  position: 'home_top' | 'category_sidebar' | 'home_banner';
-  /** Optional city this content targets */
-  city?: string;
-  imageUrl: string;
   title: string;
-  subtitle?: string;
-  ctaText: string;
-  ctaUrl: string;
-  startDate: string;
-  endDate: string;
+  description: string;
+  city: string; // Added city field
+  state: string;
+  imageUrl: string;
+  companyId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface SolarCalculation {
