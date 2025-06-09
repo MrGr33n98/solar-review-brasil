@@ -39,6 +39,8 @@ export interface SponsoredContent {
   subtitle?: string;
   ctaText: string;
   ctaUrl: string;
+  /** Optional target city for geo specific campaigns */
+  city?: string;
   startDate: string;
   endDate: string;
 }

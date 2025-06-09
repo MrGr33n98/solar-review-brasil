@@ -156,6 +156,7 @@ export const sponsoredContent: SponsoredContent[] = [
     subtitle: 'Instalação profissional e garantia estendida',
     ctaText: 'Solicite seu Orçamento',
     ctaUrl: '/empresa/solar-energy-brasil',
+    city: 'São Paulo',
     startDate: '2024-01-01',
     endDate: '2024-02-29'
   },
@@ -168,6 +169,20 @@ export const sponsoredContent: SponsoredContent[] = [
     subtitle: 'Para residências, empresas e agronegócio',
     ctaText: 'Conheça Nossas Soluções',
     ctaUrl: '/empresa/energia-verde-brasil',
+    city: 'Curitiba',
+    startDate: '2024-01-01',
+    endDate: '2024-02-29'
+  },
+  {
+    id: '3',
+    companyId: '2',
+    position: 'home_banner',
+    imageUrl: 'https://images.pexels.com/photos/2800832/pexels-photo-2800832.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    title: 'Economize com Energia Solar no RJ',
+    subtitle: 'Instalação rápida e suporte 24/7',
+    ctaText: 'Peça seu Orçamento',
+    ctaUrl: '/empresa/ecosolar-tecnologia',
+    city: 'Rio de Janeiro',
     startDate: '2024-01-01',
     endDate: '2024-02-29'
   }
