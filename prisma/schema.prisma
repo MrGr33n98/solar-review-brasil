@@ -3,60 +3,53 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-enum PlanType {
-  free
-  premium
-  enterprise
-}
-
 model Company {
-  id                String   @id
-  name              String
-  slug              String   @unique
-  description       String
-  logo              String
-  banner            String
-  rating            Float
-  reviewCount       Int
-  planType          PlanType
-  city              String
-  state             String
-  specialties       String[]
-  established       Int
-  website           String?
-  phone             String?
-  verificationBadges String[]
-  reviews           Review[]
-  sponsored         SponsoredContent[]
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  imageUrl    String?
+  website     String?
+  phone       String?
+  email       String    @unique
+  address     String?
+  city        String
+  state       String
+  rating      Float     @default(0)
+  reviewCount Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  reviews     Review[]
+  contacts    Contact[]
 }
 
 model Review {
-  id        String   @id
-  company   Company  @relation(fields: [companyId], references: [id])
-  companyId String
-  userName  String
+  id        String   @id @default(cuid())
   rating    Int
   comment   String
-  verified  Boolean
-  createdAt DateTime
-  location  String
+  authorId  String
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
 }
 
-model SponsoredContent {
-  id        String   @id
-  company   Company  @relation(fields: [companyId], references: [id])
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  status    String   @default("pending")
   companyId String
-  position  String
-  city      String
-  imageUrl  String
-  title     String
-  subtitle  String
-  ctaText   String
-  ctaUrl    String
-  startDate DateTime
-  endDate   DateTime
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
 }
