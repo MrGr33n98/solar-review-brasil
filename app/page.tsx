@@ -1,11 +1,5 @@
-'use client';
-
-import { Metadata } from 'next';
-import Hero from '@/components/hero';
-import Features from '@/components/features';
-import HowItWorks from '@/components/how-it-works';
-import ContactCTA from '@/components/contact-cta';
-import { CompanySearch } from '@/components/company-search';
+import type { Metadata } from 'next';
+import HomeClient from '@/components/home-client';
 
 export const metadata: Metadata = {
   title: 'SolarReviews Brasil - Avaliações de Empresas de Energia Solar',
@@ -13,13 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <main>
-      <Hero />
-      <CompanySearch />
-      <Features />
-      <HowItWorks />
-      <ContactCTA />
-    </main>
-  );
+  return <HomeClient />;
 }
