@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { SponsoredContent } from "@/types";
 
 interface SponsorPopupProps {
-  sponsor: SponsoredContent;
+  sponsor: SponsoredContent | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export function SponsorPopup({ sponsor, open, onOpenChange }: SponsorPopupProps) {
+  if (!sponsor) return null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 overflow-hidden max-w-md">
