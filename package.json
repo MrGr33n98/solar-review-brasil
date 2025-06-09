@@ -74,12 +74,17 @@
     "typescript": "5.2.2",
     "uuid": "^9.0.0",
     "vaul": "^0.9.9",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@prisma/client": "^5.12.1"
   },
   "devDependencies": {
     "@types/uuid": "^10.0.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
+    "prisma": "^5.12.1"
+=======
     "prisma": "^6.9.0"
+>>>>>>> 47715febea6c5a1898bd7e425f4ea290613e7f73
 =======
     "prisma": "^6.9.0",
     "ts-node": "^10.9.1"

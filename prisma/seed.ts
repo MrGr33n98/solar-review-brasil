@@ -1,53 +1,40 @@
 import { PrismaClient } from '@prisma/client'
-import { companies, reviews } from '../lib/data'
+import { companies } from '../lib/data'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  for (const c of companies) {
+  // Clean existing data
+  await prisma.review.deleteMany()
+  await prisma.contact.deleteMany()
+  await prisma.company.deleteMany()
+
+  // Seed companies
+  for (const company of companies) {
     await prisma.company.create({
       data: {
-        id: c.id,
-        name: c.name,
-        slug: c.slug,
-        description: c.description,
-        logo: c.logo,
-        banner: c.banner,
-        rating: c.rating,
-        reviewCount: c.reviewCount,
-        planType: c.planType,
-        city: c.location.city,
-        state: c.location.state,
-        specialties: c.specialties,
-        established: c.established,
-        website: c.website,
-        phone: c.phone,
-        verificationBadges: c.verificationBadges,
-      },
-    })
-  }
-
-  for (const r of reviews) {
-    await prisma.review.create({
-      data: {
-        id: r.id,
-        companyId: r.companyId,
-        userName: r.userName,
-        rating: r.rating,
-        comment: r.comment,
-        verified: r.verified,
-        createdAt: new Date(r.createdAt),
-        location: r.location,
-      },
+        name: company.name,
+        description: company.description,
+        imageUrl: company.imageUrl,
+        website: company.website,
+        phone: company.phone,
+        email: company.email,
+        address: company.address,
+        city: company.location.city,
+        state: company.location.state,
+        rating: company.rating,
+        reviewCount: company.reviewCount
+      }
     })
   }
 }
 
 main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
   })
