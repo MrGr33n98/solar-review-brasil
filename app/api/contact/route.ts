@@ -1,29 +1,30 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import type { ContactRequest } from '@/types';
-
-const contactSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  companyId: z.string().optional(),
-  message: z.string().min(1),
-});
+import { contactSchema } from '@/lib/validations/contact';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const data = contactSchema.parse(body);
-    const newRequest = await prisma.contactRequest.create({
-      data: data,
+    const validatedData = contactSchema.parse(body);
+
+    const contact = await prisma.contactRequest.create({
+      data: {
+        ...validatedData,
+        status: 'pending',
+      },
     });
-    return NextResponse.json(newRequest, { status: 201 });
+
+    return NextResponse.json(contact, { status: 201 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
+    if (error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Dados inválidos', details: error.errors },
+        { status: 400 }
+      );
     }
+
     return NextResponse.json(
-      { error: 'Failed to create contact request' },
+      { error: 'Erro ao criar solicitação de contato' },
       { status: 500 }
     );
   }
