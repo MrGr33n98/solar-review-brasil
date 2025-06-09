@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, MapPin, Clock, X } from 'lucide-react';
+import { Search, MapPin, Clock, X, Zap } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { companies, brazilianStates } from '@/lib/data';
 
 interface SearchSuggestion {
@@ -173,7 +172,7 @@ export function GoogleSearch({ onSearch, placeholder = "Buscar empresas de energ
       case 'company': return <Search className="h-4 w-4 text-blue-600" />;
       case 'city':
       case 'state': return <MapPin className="h-4 w-4 text-green-600" />;
-      case 'specialty': return <Badge className="h-4 w-4 text-purple-600" />;
+      case 'specialty': return <Zap className="h-4 w-4 text-purple-600" />;
       default: return <Search className="h-4 w-4 text-gray-400" />;
     }
   };
