@@ -1,5 +1,7 @@
-'use client';
+import type { Metadata } from 'next';
+import HomeClient from '@/components/home-client';
 
+<<<<<<< HEAD
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search, Filter, MapPin, Star } from 'lucide-react';
@@ -344,4 +346,13 @@ export default function CompaniesPage() {
     />
     </>
   );
+=======
+export const metadata: Metadata = {
+  title: 'SolarReviews Brasil - Avaliações de Empresas de Energia Solar',
+  description: 'Compare avaliações de empresas de energia solar e encontre o melhor instalador para seu projeto fotovoltaico.',
+};
+
+export default function Home() {
+  return <HomeClient />;
+>>>>>>> 95e0ca512db451285788129260865d15595771fc
 }

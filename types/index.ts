@@ -34,17 +34,12 @@ export interface SponsoredContent {
   id: string;
   title: string;
   description: string;
-  city: string; // Add city field
+  city: string; // Added city field
   state: string;
   imageUrl: string;
   companyId: string;
-  position: 'home_top' | 'category_sidebar' | 'home_banner';
-  subtitle?: string;
-  ctaText: string;
-  ctaUrl: string;
-  /** Optional target city for geo specific campaigns */
-  startDate: string;
-  endDate: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface SolarCalculation {
