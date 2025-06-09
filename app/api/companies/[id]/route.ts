@@ -3,28 +3,29 @@ import { z } from 'zod';
 import { companies } from '@/lib/data';
 import type { Company } from '@/types';
 
-const updateSchema = z.object({
-  name: z.string().optional(),
-  slug: z.string().optional(),
-  description: z.string().optional(),
-  logo: z.string().optional(),
-  banner: z.string().optional(),
-  rating: z.number().optional(),
-  reviewCount: z.number().optional(),
-  planType: z.enum(['free', 'premium', 'enterprise']).optional(),
+const companySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  logo: z.string(),
+  banner: z.string(),
+  rating: z.number(),
+  reviewCount: z.number(),
+  planType: z.enum(['free', 'premium', 'enterprise']),
   premiumExpiresAt: z.string().optional(),
-  location: z
-    .object({
-      city: z.string(),
-      state: z.string(),
-    })
-    .optional(),
-  specialties: z.array(z.string()).optional(),
-  established: z.number().optional(),
+  location: z.object({
+    city: z.string(),
+    state: z.string(),
+  }),
+  specialties: z.array(z.string()),
+  established: z.number(),
   website: z.string().optional(),
   phone: z.string().optional(),
   verificationBadges: z.array(z.string()).optional(),
 });
+
+const updateSchema = companySchema.partial();
 
 export async function GET(
   _req: Request,
