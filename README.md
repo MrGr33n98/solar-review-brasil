@@ -42,3 +42,8 @@ For uploading images you also need AWS credentials and bucket details:
 - **hooks/** - Custom React hooks
 - **lib/** - Utility libraries and data helpers
 - **types/** - TypeScript type definitions
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
