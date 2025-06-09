@@ -19,7 +19,9 @@ export async function generateMetadata({ params }: CompanyPageProps): Promise<Me
 
   const title = `${company.name} | SolarReviews Brasil`;
   const description = company.description;
-  const url = `https://solarreviewsbrasil.com.br/empresa/${company.slug}`;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const url = `${baseUrl}/empresa/${company.slug}`;
 
   return {
     title,
