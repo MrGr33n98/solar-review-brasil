@@ -1,8 +1,11 @@
-import './globals.css';
+import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/ui/sonner';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SolarReviews Brasil - Avaliações de Empresas de Energia Solar',
@@ -17,12 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>
+      <body className={inter.className}>
         <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1">{children}</main>
           <Footer />
         </div>
         <Toaster />
