@@ -1,47 +1,51 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
-import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { compare } from 'bcrypt';
+import bcrypt from 'bcrypt';
 
-const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: 'database',
-  },
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        password: { label: 'Senha', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) return null;
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Credenciais inválidas');
+        }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email }
         });
-        if (!user || !user.password) return null;
 
-        const isValid = await compare(credentials.password, user.password);
-        if (!isValid) return null;
+        if (!user || !user.hashedPassword) {
+          throw new Error('Usuário não encontrado');
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        );
+
+        if (!isPasswordValid) {
+          throw new Error('Senha incorreta');
+        }
 
         return user;
-      },
-    }),
+      }
+    })
   ],
   pages: {
     signIn: '/login',
-    error: '/error',
+    error: '/auth/error'
   },
-};
-
-const handler = NextAuth(authOptions);
+  session: {
+    strategy: 'jwt'
+  }
+});
 
 export { handler as GET, handler as POST };
