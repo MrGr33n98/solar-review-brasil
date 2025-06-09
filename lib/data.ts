@@ -1,0 +1,204 @@
+import { Company, Review, SponsoredContent } from '@/types';
+
+export const companies: Company[] = [
+  {
+    id: '1',
+    name: 'Solar Energy Brasil',
+    slug: 'solar-energy-brasil',
+    description: 'Líder em soluções de energia solar residencial e comercial com mais de 15 anos de experiência no mercado brasileiro.',
+    logo: 'https://images.pexels.com/photos/9800010/pexels-photo-9800010.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.8,
+    reviewCount: 342,
+    planType: 'premium',
+    location: { city: 'São Paulo', state: 'SP' },
+    specialties: ['Residencial', 'Comercial', 'Industrial'],
+    established: 2008,
+    website: 'https://solarenergybrasil.com.br',
+    phone: '(11) 99999-9999',
+    verificationBadges: ['verified_company', 'top_rated', 'experienced', 'high_volume', 'fast_response', 'quality_guarantee']
+  },
+  {
+    id: '2',
+    name: 'EcoSolar Tecnologia',
+    slug: 'ecosolar-tecnologia',
+    description: 'Especializada em sistemas fotovoltaicos de alta eficiência com garantia estendida e suporte técnico 24/7.',
+    logo: 'https://images.pexels.com/photos/9800014/pexels-photo-9800014.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/2800832/pexels-photo-2800832.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.6,
+    reviewCount: 198,
+    planType: 'premium',
+    location: { city: 'Rio de Janeiro', state: 'RJ' },
+    specialties: ['Residencial', 'Monitoramento'],
+    established: 2012,
+    website: 'https://ecosolar.com.br',
+    phone: '(21) 98888-8888',
+    verificationBadges: ['verified_company', 'top_rated', 'experienced', 'fast_response']
+  },
+  {
+    id: '3',
+    name: 'SunPower Solutions',
+    slug: 'sunpower-solutions',
+    description: 'Fornecemos soluções completas em energia solar com foco em sustentabilidade e economia de energia.',
+    logo: 'https://images.pexels.com/photos/9800011/pexels-photo-9800011.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.4,
+    reviewCount: 156,
+    planType: 'free',
+    location: { city: 'Belo Horizonte', state: 'MG' },
+    specialties: ['Residencial', 'Rural'],
+    established: 2015,
+    phone: '(31) 97777-7777',
+    verificationBadges: ['experienced']
+  },
+  {
+    id: '4',
+    name: 'Energia Verde Brasil',
+    slug: 'energia-verde-brasil',
+    description: 'Pioneiros em energia limpa, oferecemos soluções inovadoras para residências e empresas.',
+    logo: 'https://images.pexels.com/photos/9800012/pexels-photo-9800012.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/2800829/pexels-photo-2800829.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.7,
+    reviewCount: 289,
+    planType: 'enterprise',
+    location: { city: 'Curitiba', state: 'PR' },
+    specialties: ['Comercial', 'Industrial', 'Agronegócio'],
+    established: 2010,
+    website: 'https://energiaverde.com.br',
+    phone: '(41) 96666-6666',
+    verificationBadges: ['verified_company', 'top_rated', 'experienced', 'high_volume', 'certified', 'fast_response', 'nationwide', 'quality_guarantee']
+  },
+  {
+    id: '5',
+    name: 'Solar Tech Nordeste',
+    slug: 'solar-tech-nordeste',
+    description: 'Especialistas em energia solar para o clima nordestino, com soluções otimizadas para alta irradiação.',
+    logo: 'https://images.pexels.com/photos/9800013/pexels-photo-9800013.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/2800830/pexels-photo-2800830.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.9,
+    reviewCount: 127,
+    planType: 'premium',
+    location: { city: 'Fortaleza', state: 'CE' },
+    specialties: ['Residencial', 'Comercial', 'Rural'],
+    established: 2016,
+    website: 'https://solartechnordeste.com.br',
+    phone: '(85) 95555-5555',
+    verificationBadges: ['verified_company', 'top_rated', 'experienced', 'fast_response', 'quality_guarantee']
+  },
+  {
+    id: '6',
+    name: 'Amazônia Solar',
+    slug: 'amazonia-solar',
+    description: 'Levando energia limpa para a região amazônica com soluções sustentáveis e resistentes ao clima tropical.',
+    logo: 'https://images.pexels.com/photos/9800015/pexels-photo-9800015.jpeg?auto=compress&cs=tinysrgb&w=400',
+    banner: 'https://images.pexels.com/photos/2800831/pexels-photo-2800831.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    rating: 4.3,
+    reviewCount: 89,
+    planType: 'free',
+    location: { city: 'Manaus', state: 'AM' },
+    specialties: ['Residencial', 'Rural', 'Isolado'],
+    established: 2018,
+    phone: '(92) 94444-4444',
+    verificationBadges: ['experienced']
+  }
+];
+
+export const reviews: Review[] = [
+  {
+    id: '1',
+    companyId: '1',
+    userName: 'Carlos Silva',
+    rating: 5,
+    comment: 'Excelente atendimento e instalação perfeita. A economia na conta de luz foi imediata e significativa.',
+    verified: true,
+    createdAt: '2024-01-15',
+    location: 'São Paulo, SP'
+  },
+  {
+    id: '2',
+    companyId: '1',
+    userName: 'Maria Santos',
+    rating: 4,
+    comment: 'Profissionais competentes e prazo cumprido. Recomendo!',
+    verified: true,
+    createdAt: '2024-01-10',
+    location: 'Campinas, SP'
+  },
+  {
+    id: '3',
+    companyId: '2',
+    userName: 'João Oliveira',
+    rating: 5,
+    comment: 'Sistema funcionando perfeitamente há 6 meses. Suporte técnico excepcional.',
+    verified: true,
+    createdAt: '2024-01-08',
+    location: 'Rio de Janeiro, RJ'
+  },
+  {
+    id: '4',
+    companyId: '2',
+    userName: 'Ana Costa',
+    rating: 4,
+    comment: 'Ótima qualidade dos equipamentos e instalação bem feita.',
+    verified: false,
+    createdAt: '2024-01-05',
+    location: 'Niterói, RJ'
+  }
+];
+
+export const sponsoredContent: SponsoredContent[] = [
+  {
+    id: '1',
+    companyId: '1',
+    position: 'home_banner',
+    imageUrl: 'https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    title: 'Energia Solar com até 95% de Economia',
+    subtitle: 'Instalação profissional e garantia estendida',
+    ctaText: 'Solicite seu Orçamento',
+    ctaUrl: '/empresa/solar-energy-brasil',
+    startDate: '2024-01-01',
+    endDate: '2024-02-29'
+  },
+  {
+    id: '2',
+    companyId: '4',
+    position: 'home_banner',
+    imageUrl: 'https://images.pexels.com/photos/2800829/pexels-photo-2800829.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    title: 'Soluções Completas em Energia Limpa',
+    subtitle: 'Para residências, empresas e agronegócio',
+    ctaText: 'Conheça Nossas Soluções',
+    ctaUrl: '/empresa/energia-verde-brasil',
+    startDate: '2024-01-01',
+    endDate: '2024-02-29'
+  }
+];
+
+export const brazilianStates = [
+  { code: 'AC', name: 'Acre', irradiation: 4.5 },
+  { code: 'AL', name: 'Alagoas', irradiation: 5.2 },
+  { code: 'AP', name: 'Amapá', irradiation: 4.8 },
+  { code: 'AM', name: 'Amazonas', irradiation: 4.3 },
+  { code: 'BA', name: 'Bahia', irradiation: 5.8 },
+  { code: 'CE', name: 'Ceará', irradiation: 5.9 },
+  { code: 'DF', name: 'Distrito Federal', irradiation: 5.4 },
+  { code: 'ES', name: 'Espírito Santo', irradiation: 4.9 },
+  { code: 'GO', name: 'Goiás', irradiation: 5.5 },
+  { code: 'MA', name: 'Maranhão', irradiation: 5.1 },
+  { code: 'MT', name: 'Mato Grosso', irradiation: 5.3 },
+  { code: 'MS', name: 'Mato Grosso do Sul', irradiation: 5.2 },
+  { code: 'MG', name: 'Minas Gerais', irradiation: 5.1 },
+  { code: 'PA', name: 'Pará', irradiation: 4.7 },
+  { code: 'PB', name: 'Paraíba', irradiation: 5.6 },
+  { code: 'PR', name: 'Paraná', irradiation: 4.6 },
+  { code: 'PE', name: 'Pernambuco', irradiation: 5.7 },
+  { code: 'PI', name: 'Piauí', irradiation: 5.4 },
+  { code: 'RJ', name: 'Rio de Janeiro', irradiation: 4.8 },
+  { code: 'RN', name: 'Rio Grande do Norte', irradiation: 5.8 },
+  { code: 'RS', name: 'Rio Grande do Sul', irradiation: 4.4 },
+  { code: 'RO', name: 'Rondônia', irradiation: 4.6 },
+  { code: 'RR', name: 'Roraima', irradiation: 4.9 },
+  { code: 'SC', name: 'Santa Catarina', irradiation: 4.5 },
+  { code: 'SP', name: 'São Paulo', irradiation: 4.9 },
+  { code: 'SE', name: 'Sergipe', irradiation: 5.3 },
+  { code: 'TO', name: 'Tocantins', irradiation: 5.2 }
+];
