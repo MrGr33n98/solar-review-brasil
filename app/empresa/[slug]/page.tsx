@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Phone, Globe, Calendar, Award, Users, Star } from 'lucide-react';
+import { MapPin, Phone, Globe, Calendar, Award, Users, Star, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ContactForm } from '@/components/contact-form';
@@ -10,6 +10,34 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RatingStars } from '@/components/rating-stars';
 import { VerificationBadges, useCompanyBadges } from '@/components/verification-badges';
 import { companies, reviews } from '@/lib/data';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: CompanyPageProps): Promise<Metadata> {
+  const company = companies.find(c => c.slug === params.slug);
+  if (!company) return {};
+
+  const title = `${company.name} | SolarReviews Brasil`;
+  const description = company.description;
+  const url = `https://solarreviewsbrasil.com.br/empresa/${company.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [{ url: company.banner }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [company.banner]
+    }
+  };
+}
 
 interface CompanyPageProps {
   params: {
@@ -206,6 +234,18 @@ export default function CompanyPage({ params }: CompanyPageProps) {
                   <Button variant="outline" className="w-full">
                     <Phone className="h-4 w-4 mr-2" />
                     Ligar Agora
+                  </Button>
+                )}
+                {company.phone && (
+                  <Button variant="outline" className="w-full" asChild>
+                    <a
+                      href={`https://wa.me/55${company.phone.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      WhatsApp
+                    </a>
                   </Button>
                 )}
                 {company.website && (
