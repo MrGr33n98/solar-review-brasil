@@ -118,6 +118,8 @@ export default function CompaniesPage() {
     }
   };
 
+  const sponsor = popupSponsor || { imageUrl: "", title: "" }; // Provide a default sponsor
+
   return (
     <>
     <div className="min-h-screen bg-gray-50">
@@ -338,7 +340,7 @@ export default function CompaniesPage() {
       </div>
     </div>
     <SponsorPopup
-      sponsor={popupSponsor as Sponsor}
+      sponsor={sponsor}
       open={showPopup && !!popupSponsor}
       onOpenChange={setShowPopup}
     />
