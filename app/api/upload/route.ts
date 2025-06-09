@@ -1,51 +1,49 @@
 import { NextResponse } from 'next/server';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
-import { uploadedImageUrls } from '@/lib/uploads';
+import { getServerSession } from 'next-auth';
+import { put } from '@vercel/blob';
+import { z } from 'zod';
 
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY ? {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  } : undefined,
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
+const uploadSchema = z.object({
+  filename: z.string(),
+  contentType: z.string().regex(/^image\/(jpeg|png|webp)$/),
+  size: z.number().max(MAX_FILE_SIZE),
 });
 
-export async function POST(req: Request) {
-  const formData = await req.formData();
-  const file = formData.get('file');
-
-  if (!file || !(file instanceof File)) {
-    return NextResponse.json({ error: 'File not provided' }, { status: 400 });
-  }
-
-  if (file.size > 5 * 1024 * 1024) {
-    return NextResponse.json({ error: 'File too large' }, { status: 400 });
-  }
-
-  if (!['image/jpeg', 'image/png'].includes(file.type)) {
-    return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
-  }
-
-  const extension = file.type === 'image/png' ? 'png' : 'jpg';
-  const key = `${uuidv4()}.${extension}`;
-  const bucket = process.env.S3_BUCKET_NAME!;
-  const body = Buffer.from(await file.arrayBuffer());
-
+export async function POST(request: Request) {
   try {
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: body,
-        ContentType: file.type,
-      })
-    );
+    const session = await getServerSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    const url = `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
-    uploadedImageUrls.push(url);
-    return NextResponse.json({ url }, { status: 201 });
-  } catch (err) {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+
+    const validation = uploadSchema.safeParse({
+      filename: file.name,
+      contentType: file.type,
+      size: file.size,
+    });
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Invalid file' },
+        { status: 400 }
+      );
+    }
+
+    const blob = await put(file.name, file, {
+      access: 'public',
+      contentType: file.type,
+    });
+
+    return NextResponse.json({ url: blob.url });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Upload failed' },
+      { status: 500 }
+    );
   }
 }
