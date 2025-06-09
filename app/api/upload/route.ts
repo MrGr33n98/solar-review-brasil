@@ -28,7 +28,10 @@ export async function POST(request: Request) {
     });
 
     if (!validation.success) {
-      return NextResponse.json({ error: 'Invalid file' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid file' },
+        { status: 400 }
+      );
     }
 
     const blob = await put(file.name, file, {
@@ -38,6 +41,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: blob.url });
   } catch (error) {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Upload failed' },
+      { status: 500 }
+    );
   }
 }
