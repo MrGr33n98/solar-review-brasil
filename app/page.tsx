@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
 import { Search, Star, Award, Users, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { BannerCarousel } from '@/components/banner-carousel';
 import { CompanyCard } from '@/components/company-card';
 import { SolarCalculator } from '@/components/solar-calculator';
