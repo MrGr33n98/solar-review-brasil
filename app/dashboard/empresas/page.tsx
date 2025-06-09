@@ -65,6 +65,18 @@ export default function CompaniesDashboardPage() {
     }
   };
 
+  const uploadFile = async (file: File, field: "logo" | "banner") => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    if (res.ok) {
+      const data = await res.json();
+      setEditing((prev) =>
+        prev ? { ...prev, [field]: data.url } : prev
+      );
+    }
+  };
+
   const contactsFor = (id: string) =>
     contactRequests.filter((c) => c.companyId === id).length;
 
@@ -155,6 +167,32 @@ export default function CompaniesDashboardPage() {
                                     })
                                   }
                                 />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Logo</Label>
+                                <Input
+                                  type="file"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) uploadFile(file, "logo");
+                                  }}
+                                />
+                                {editing.logo && (
+                                  <img src={editing.logo} className="h-10" />
+                                )}
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Banner</Label>
+                                <Input
+                                  type="file"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) uploadFile(file, "banner");
+                                  }}
+                                />
+                                {editing.banner && (
+                                  <img src={editing.banner} className="h-10" />
+                                )}
                               </div>
                               <div className="flex justify-end gap-2 pt-2">
                                 <Button

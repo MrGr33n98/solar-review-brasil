@@ -8,8 +8,8 @@ export default function LoginPage() {
     <div className="container mx-auto py-10">
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
-        <Button 
-          onClick={() => signIn('google')}
+        <Button
+          onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
           className="w-full"
         >
           Entrar com Google

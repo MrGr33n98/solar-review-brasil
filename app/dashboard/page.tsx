@@ -28,11 +28,18 @@ export default function DashboardPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
+  const [metrics, setMetrics] = useState<{ contactCount: number; reviewCount: number } | null>(null);
   const pageSize = 10;
 
   useEffect(() => {
     loadRequests();
   }, [page, search]);
+
+  useEffect(() => {
+    fetch('/api/metrics')
+      .then((res) => res.json())
+      .then(setMetrics);
+  }, []);
 
   const loadRequests = async () => {
     const res = await fetch(
@@ -51,6 +58,22 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Dashboard de Contatos</h1>
+        {metrics && (
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Contatos</CardTitle>
+              </CardHeader>
+              <CardContent>{metrics.contactCount}</CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Avaliações</CardTitle>
+              </CardHeader>
+              <CardContent>{metrics.reviewCount}</CardContent>
+            </Card>
+          </div>
+        )}
         <div className="mb-4 max-w-sm">
           <Input
             placeholder="Filtrar por nome ou email..."
