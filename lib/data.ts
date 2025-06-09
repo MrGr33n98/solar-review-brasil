@@ -146,7 +146,7 @@ export const reviews: Review[] = [
   }
 ];
 
-export const sponsoredContent: SponsoredContent[] = [
+export const sponsoredContent = [
   {
     id: '1',
     title: 'Energia Solar em São Paulo',
