@@ -1,20 +1,43 @@
 import { NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { getServerSession } from 'next-auth';
+import { put } from '@vercel/blob';
+import { z } from 'zod';
 
-export async function POST(req: Request) {
-  const formData = await req.formData();
-  const file = formData.get('file') as File | null;
-  if (!file) {
-    return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
+const uploadSchema = z.object({
+  filename: z.string(),
+  contentType: z.string().regex(/^image\/(jpeg|png|webp)$/),
+  size: z.number().max(MAX_FILE_SIZE),
+});
+
+export async function POST(request: Request) {
+  try {
+    const session = await getServerSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+
+    const validation = uploadSchema.safeParse({
+      filename: file.name,
+      contentType: file.type,
+      size: file.size,
+    });
+
+    if (!validation.success) {
+      return NextResponse.json({ error: 'Invalid file' }, { status: 400 });
+    }
+
+    const blob = await put(file.name, file, {
+      access: 'public',
+      contentType: file.type,
+    });
+
+    return NextResponse.json({ url: blob.url });
+  } catch (error) {
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-  await mkdir(uploadDir, { recursive: true });
-  const filename = `${uuidv4()}-${file.name}`;
-  await writeFile(path.join(uploadDir, filename), buffer);
-  return NextResponse.json({ url: `/uploads/${filename}` });
 }
