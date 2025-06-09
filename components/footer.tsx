@@ -12,7 +12,7 @@ export function Footer() {
               <div className="bg-gradient-to-r from-blue-500 to-orange-500 p-2 rounded-lg">
                 <Sun className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold">
+              <span className="text-xl font-bold text-white">
                 SolarReviews<span className="text-blue-400">Brasil</span>
               </span>
             </Link>
@@ -21,9 +21,9 @@ export function Footer() {
               Conectamos consumidores a instaladores qualificados e confiáveis.
             </p>
             <div className="flex space-x-4">
-              <div className="flex items-center space-x-2 text-gray-400">
-                <Mail className="h-4 w-4" />
-                <span>contato@solarreviewsbrasil.com.br</span>
+              <div className="flex items-center space-x-2">
+                <Mail className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-400">contato@solarreviewsbrasil.com.br</span>
               </div>
             </div>
           </div>
