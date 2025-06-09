@@ -34,6 +34,9 @@ import {
 } from "@/components/ui/chart";
 import * as Recharts from "recharts";
 import type { Company, ContactRequest } from "@/types";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./columns";
+import { companies } from "@/lib/data";
 
 export default function CompaniesDashboardPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -212,6 +215,10 @@ export default function CompaniesDashboardPage() {
             )}
           </CardContent>
         </Card>
+
+        <div className="container mx-auto py-10">
+          <DataTable columns={columns} data={companies} />
+        </div>
       </div>
     </div>
   );

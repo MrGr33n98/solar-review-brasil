@@ -149,17 +149,12 @@ export const reviews: Review[] = [
 export const sponsoredContent: SponsoredContent[] = [
   {
     id: '1',
-    companyId: '1',
-    position: 'home_banner',
+    title: 'Energia Solar em São Paulo',
+    description: 'Encontre os melhores instaladores solares em SP',
     city: 'São Paulo',
-    imageUrl: 'https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    title: 'Energia Solar com até 95% de Economia',
-    subtitle: 'Instalação profissional e garantia estendida',
-    ctaText: 'Solicite seu Orçamento',
-    ctaUrl: '/empresa/solar-energy-brasil',
-    city: 'São Paulo',
-    startDate: '2024-01-01',
-    endDate: '2024-02-29'
+    state: 'SP',
+    imageUrl: '/images/sponsored/sao-paulo.jpg',
+    companyId: 'company-1',
   },
   {
     id: '2',
