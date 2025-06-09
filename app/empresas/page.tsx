@@ -20,7 +20,7 @@ export default function CompaniesPage() {
   // Get unique specialties
   const specialties = useMemo(() => {
     const allSpecialties = companies.flatMap(company => company.specialties);
-    return [...new Set(allSpecialties)];
+    return Array.from(new Set(allSpecialties));
   }, []);
 
   // Filter companies
@@ -245,7 +245,7 @@ export default function CompaniesPage() {
             {activeFiltersCount > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {selectedState !== 'all-states' && (
-                  <Badge variant="secondary\" className="flex items-center space-x-1">
+                  <Badge variant="secondary" className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
                     <span>{brazilianStates.find(s => s.code === selectedState)?.name}</span>
                   </Badge>
