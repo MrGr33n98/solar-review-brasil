@@ -1,22 +1,27 @@
-import { v4 as uuidv4 } from 'uuid';
 import { NextResponse } from 'next/server';
-import { ContactRequest } from '@/types';
-import { contactRequests } from '@/lib/contacts';
+import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
+import type { ContactRequest } from '@/types';
+
+const contactSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  companyId: z.string().optional(),
+  message: z.string().min(1),
+});
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const newRequest: ContactRequest = {
-      id: uuidv4(),
-      ...body,
-      createdAt: new Date(),
-      status: 'pending'
-    };
-    
-    contactRequests.push(newRequest);
-    
+    const data = contactSchema.parse(body);
+    const newRequest = await prisma.contactRequest.create({
+      data: data,
+    });
     return NextResponse.json(newRequest, { status: 201 });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
+    }
     return NextResponse.json(
       { error: 'Failed to create contact request' },
       { status: 500 }
@@ -30,23 +35,27 @@ export async function GET(request: Request) {
   const pageSize = Number(searchParams.get('pageSize')) || 10;
   const search = searchParams.get('search') || '';
 
-  let filtered = contactRequests;
-  if (search) {
-    filtered = contactRequests.filter(req => 
-      req.name.toLowerCase().includes(search.toLowerCase()) ||
-      req.email.toLowerCase().includes(search.toLowerCase())
-    );
-  }
+  const where = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+        ],
+      }
+    : undefined;
 
-  const total = filtered.length;
-  const pages = Math.ceil(total / pageSize);
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
+  const total = await prisma.contactRequest.count({ where });
+  const data = await prisma.contactRequest.findMany({
+    where,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: { createdAt: 'desc' },
+  });
 
   return NextResponse.json({
-    data: filtered.slice(start, end),
+    data,
     total,
     page,
-    pages
+    pages: Math.ceil(total / pageSize),
   });
 }
