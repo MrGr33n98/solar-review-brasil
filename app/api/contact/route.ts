@@ -41,6 +41,6 @@ export async function GET(request: Request) {
     data: filtered.slice(start, end),
     total,
     page,
-    pages    pages
-  });  });
-}}
+    pages
+  });
+}
