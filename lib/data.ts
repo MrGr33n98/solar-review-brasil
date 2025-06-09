@@ -151,6 +151,7 @@ export const sponsoredContent: SponsoredContent[] = [
     id: '1',
     companyId: '1',
     position: 'home_banner',
+    city: 'São Paulo',
     imageUrl: 'https://images.pexels.com/photos/433308/pexels-photo-433308.jpeg?auto=compress&cs=tinysrgb&w=1200',
     title: 'Energia Solar com até 95% de Economia',
     subtitle: 'Instalação profissional e garantia estendida',
@@ -164,6 +165,7 @@ export const sponsoredContent: SponsoredContent[] = [
     id: '2',
     companyId: '4',
     position: 'home_banner',
+    city: 'Curitiba',
     imageUrl: 'https://images.pexels.com/photos/2800829/pexels-photo-2800829.jpeg?auto=compress&cs=tinysrgb&w=1200',
     title: 'Soluções Completas em Energia Limpa',
     subtitle: 'Para residências, empresas e agronegócio',
@@ -183,6 +185,19 @@ export const sponsoredContent: SponsoredContent[] = [
     ctaText: 'Peça seu Orçamento',
     ctaUrl: '/empresa/ecosolar-tecnologia',
     city: 'Rio de Janeiro',
+    startDate: '2024-01-01',
+    endDate: '2024-02-29'
+  },
+  {
+    id: '3',
+    companyId: '2',
+    position: 'home_banner',
+    city: 'Rio de Janeiro',
+    imageUrl: 'https://images.pexels.com/photos/2800832/pexels-photo-2800832.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    title: 'Energia Solar no Rio com Garantia de Qualidade',
+    subtitle: 'Projetos sob medida para sua residência ou empresa',
+    ctaText: 'Fale Conosco',
+    ctaUrl: '/empresa/ecosolar-tecnologia',
     startDate: '2024-01-01',
     endDate: '2024-02-29'
   }
