@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Search, Filter, MapPin, Star } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,11 +12,45 @@ import { GoogleSearch } from '@/components/google-search';
 import { companies, brazilianStates } from '@/lib/data';
 
 export default function CompaniesPage() {
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedState, setSelectedState] = useState('all-states');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all-specialties');
   const [minRating, setMinRating] = useState('any-rating');
   const [planFilter, setPlanFilter] = useState('all-plans');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    const locationParam = searchParams.get('location');
+    const stateParam = searchParams.get('state');
+    const specialtyParam = searchParams.get('specialty');
+    const ratingParam = searchParams.get('rating');
+    const planParam = searchParams.get('plan');
+
+    if (q) {
+      setSearchTerm(q);
+    }
+    const loc = locationParam || stateParam;
+    if (loc) {
+      const matchedState = brazilianStates.find(state =>
+        state.name.toLowerCase().includes(loc.toLowerCase()) ||
+        loc.toLowerCase().includes(state.code.toLowerCase()) ||
+        loc.toLowerCase().includes(state.name.toLowerCase())
+      );
+      if (matchedState) {
+        setSelectedState(matchedState.code);
+      }
+    }
+    if (specialtyParam) {
+      setSelectedSpecialty(specialtyParam);
+    }
+    if (ratingParam) {
+      setMinRating(ratingParam);
+    }
+    if (planParam) {
+      setPlanFilter(planParam);
+    }
+  }, [searchParams]);
 
   // Get unique specialties
   const specialties = useMemo(() => {
