@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { companies } from '@/lib/data';
+import { prisma } from '@/lib/prisma';
 import type { Company } from '@/types';
 
 const companySchema = z.object({
@@ -31,7 +31,7 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const company = companies.find((c) => c.id === params.id);
+  const company = await prisma.company.findUnique({ where: { id: params.id } });
   if (!company) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
@@ -45,12 +45,10 @@ export async function PUT(
   try {
     const data = await req.json();
     const parsed = updateSchema.parse(data);
-    const index = companies.findIndex((c) => c.id === params.id);
-    if (index === -1) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-    const updated: Company = { ...companies[index], ...parsed };
-    companies[index] = updated;
+    const updated = await prisma.company.update({
+      where: { id: params.id },
+      data: parsed,
+    });
     return NextResponse.json(updated);
   } catch (e) {
     return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
@@ -61,10 +59,10 @@ export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const index = companies.findIndex((c) => c.id === params.id);
-  if (index === -1) {
+  try {
+    const removed = await prisma.company.delete({ where: { id: params.id } });
+    return NextResponse.json(removed);
+  } catch (e) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
-  const removed = companies.splice(index, 1)[0];
-  return NextResponse.json(removed);
 }

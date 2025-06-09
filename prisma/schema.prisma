@@ -90,13 +90,15 @@ model ContactRequest {
   id        String   @id @default(cuid())
   name      String
   email     String
-  companyId String?
+  phone     String
   message   String
-  createdAt DateTime @default(now())
-
+  status    String   @default("pending")
+  companyId String?
   company   Company? @relation(fields: [companyId], references: [id])
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
 }
 
 model Account {
