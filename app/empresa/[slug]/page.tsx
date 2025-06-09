@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RatingStars } from '@/components/rating-stars';
 import { VerificationBadges, useCompanyBadges } from '@/components/verification-badges';
+import { CompanyJsonLd } from '@/components/company-jsonld';
 import { companies, reviews } from '@/lib/data';
 import type { Metadata } from 'next';
 
@@ -57,6 +58,7 @@ export default function CompanyPage({ params }: CompanyPageProps) {
 
   return (
     <div className="min-h-screen">
+      <CompanyJsonLd company={company} />
       {/* Company Header */}
       <div className="relative h-64 md:h-80">
         <Image
