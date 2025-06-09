@@ -3,10 +3,20 @@ export interface Company {
   name: string;
   slug: string;
   description: string;
+  logo: string;
+  banner: string;
+  rating: number;
+  reviewCount: number;
+  planType: 'free' | 'premium' | 'enterprise';
   location: {
     city: string;
     state: string;
   };
+  specialties: string[];
+  established: number;
+  website?: string;
+  phone?: string;
+  verificationBadges: string[];
 }
 
 export interface Review {

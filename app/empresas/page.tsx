@@ -12,36 +12,46 @@ import { GoogleSearch } from '@/components/google-search';
 import { companies, brazilianStates } from '@/lib/data';
 
 export default function CompaniesPage() {
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedState, setSelectedState] = useState('all-states');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all-specialties');
   const [minRating, setMinRating] = useState('any-rating');
   const [planFilter, setPlanFilter] = useState('all-plans');
 
-  const searchParams = useSearchParams();
-
   useEffect(() => {
     const q = searchParams.get('q');
-    const loc = searchParams.get('location');
-    const specialty = searchParams.get('specialty');
-    const rating = searchParams.get('rating');
-    const plan = searchParams.get('plan');
+    const locationParam = searchParams.get('location');
+    const stateParam = searchParams.get('state');
+    const specialtyParam = searchParams.get('specialty');
+    const ratingParam = searchParams.get('rating');
+    const planParam = searchParams.get('plan');
 
-    if (q) setSearchTerm(q);
-
+    if (q) {
+      setSearchTerm(q);
+    }
+    
+    const loc = locationParam || stateParam;
     if (loc) {
-      const matchedState = brazilianStates.find((state) =>
-        state.code.toLowerCase() === loc.toLowerCase() ||
-        state.name.toLowerCase().includes(loc.toLowerCase())
+      const matchedState = brazilianStates.find(state =>
+        state.name.toLowerCase().includes(loc.toLowerCase()) ||
+        loc.toLowerCase().includes(state.code.toLowerCase()) ||
+        loc.toLowerCase().includes(state.name.toLowerCase())
       );
       if (matchedState) {
         setSelectedState(matchedState.code);
       }
     }
 
-    if (specialty) setSelectedSpecialty(specialty);
-    if (rating) setMinRating(rating);
-    if (plan) setPlanFilter(plan);
+    if (specialtyParam) {
+      setSelectedSpecialty(specialtyParam);
+    }
+    if (ratingParam) {
+      setMinRating(ratingParam);
+    }
+    if (planParam) {
+      setPlanFilter(planParam);
+    }
   }, [searchParams]);
 
   // Get unique specialties
