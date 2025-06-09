@@ -32,15 +32,17 @@ export interface Review {
 
 export interface SponsoredContent {
   id: string;
+  title: string;
+  description: string;
+  city: string; // Add city field
+  state: string;
+  imageUrl: string;
   companyId: string;
   position: 'home_top' | 'category_sidebar' | 'home_banner';
-  imageUrl: string;
-  title: string;
   subtitle?: string;
   ctaText: string;
   ctaUrl: string;
   /** Optional target city for geo specific campaigns */
-  city?: string;
   startDate: string;
   endDate: string;
 }
