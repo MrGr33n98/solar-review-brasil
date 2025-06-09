@@ -78,7 +78,7 @@ export function GoogleSearch({ onSearch, placeholder = "Buscar empresas de energ
       });
 
     // City suggestions
-    const cities = [...new Set(companies.map(c => c.location.city))];
+    const cities = Array.from(new Set(companies.map(c => c.location.city)));
     cities
       .filter(city => city.toLowerCase().includes(query.toLowerCase()))
       .slice(0, 3)
