@@ -9,7 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { CompanyCard } from '@/components/company-card';
 import { GoogleSearch } from '@/components/google-search';
-import { companies, brazilianStates } from '@/lib/data';
+import { companies, brazilianStates, sponsoredContent } from '@/lib/data';
+import type { SponsoredContent as Sponsor } from '@/types';
+import { SponsorPopup } from '@/components/sponsor-popup';
 
 export default function CompaniesPage() {
   const searchParams = useSearchParams();
@@ -18,6 +20,8 @@ export default function CompaniesPage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState('all-specialties');
   const [minRating, setMinRating] = useState('any-rating');
   const [planFilter, setPlanFilter] = useState('all-plans');
+  const [popupSponsor, setPopupSponsor] = useState<Sponsor | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const q = searchParams.get('q');
@@ -43,6 +47,19 @@ export default function CompaniesPage() {
     if (ratingParam) setMinRating(ratingParam);
     if (planParam) setPlanFilter(planParam);
   }, [searchParams]);
+
+  useEffect(() => {
+    const loc = searchParams.get('location');
+    const query = (loc || searchTerm).toLowerCase();
+    const sponsor = sponsoredContent.find(
+      (s) => s.city && query.includes(s.city.toLowerCase())
+    );
+    if (sponsor && !sessionStorage.getItem(`sponsor_${s.city}`)) {
+      setPopupSponsor(sponsor);
+      setShowPopup(true);
+      sessionStorage.setItem(`sponsor_${s.city}`, 'true');
+    }
+  }, [searchParams, searchTerm]);
 
   // Get unique specialties
   const specialties = useMemo(() => {
@@ -102,6 +119,7 @@ export default function CompaniesPage() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b">
@@ -319,5 +337,11 @@ export default function CompaniesPage() {
         </div>
       </div>
     </div>
+    <SponsorPopup
+      sponsor={popupSponsor as Sponsor}
+      open={showPopup && !!popupSponsor}
+      onOpenChange={setShowPopup}
+    />
+    </>
   );
 }
