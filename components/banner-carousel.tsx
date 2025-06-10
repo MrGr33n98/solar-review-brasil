@@ -89,3 +89,32 @@ export function BannerCarousel() {
     </div>
   );
 }
+
+export default function HomePage() {
+  return (
+    <main className="min-h-[90vh] relative flex items-center overflow-hidden">
+      {/* Background Image Layer */}
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: "url('/images/solar-panels-bg.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(8px) brightness(0.4)',
+          transform: 'scale(1.1)'
+        }}
+      />
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-800/80 to-gray-900/90 z-1" />
+
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 z-2" />
+
+      {/* Content Container */}
+      <div className="container mx-auto px-4 relative z-10">
+        {/* ...existing content... */}
+      </div>
+    </main>
+  );
+}
