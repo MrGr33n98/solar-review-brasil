@@ -2,7 +2,7 @@
 
 import { Shield, Star, Zap } from 'lucide-react';
 
-export default function Features() {
+export function Features() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -20,18 +20,18 @@ export default function Features() {
             <div className="bg-blue-100 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <Shield className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Empresas Qualificadas</h3>
+            <h3 className="text-lg font-semibold mb-2">Empresas Verificadas</h3>
             <p className="text-gray-600">
-              Trabalhamos apenas com empresas certificadas e com histórico comprovado
+              Verificamos cada empresa para garantir qualidade e confiabilidade
             </p>
           </div>
           <div className="text-center">
             <div className="bg-blue-100 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
               <Zap className="h-6 w-6 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Comparação Fácil</h3>
+            <h3 className="text-lg font-semibold mb-2">Rápida Comparação</h3>
             <p className="text-gray-600">
-              Compare preços, serviços e avaliações para fazer a melhor escolha
+              Compare rapidamente os melhores instaladores na sua região
             </p>
           </div>
         </div>

@@ -2,115 +2,142 @@
 
 import Link from 'next/link';
 import { Search, Sun, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// Navigation data for better maintainability
+const navigationItems = [
+	{ href: '/empresas', label: 'Empresas' },
+	{ href: '/sobre', label: 'Sobre' },
+	{ href: '/blog', label: 'Blog' },
+	{ href: '/contato', label: 'Contato' },
+];
+
+const specialLinks = [
+	{
+		href: '/calculadora',
+		label: 'Calculadora Solar',
+		className: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
+	},
+	{
+		href: '/cadastre-sua-empresa',
+		label: 'Para Empresas',
+		className: 'bg-blue-600 hover:bg-blue-700 text-white',
+	},
+];
+
+type NavLinkProps = {
+	href: string;
+	label: string;
+	className?: string;
+	isMobile?: boolean;
+};
+
+const NavLink = ({ href, label, className, isMobile = false }: NavLinkProps) => {
+	const pathname = usePathname();
+	const isActive = pathname === href;
+
+	return (
+		<Link
+			href={href}
+			className={cn(
+				'font-medium transition duration-300',
+				isMobile ? 'py-2 px-4 rounded-md hover:bg-blue-50' : 'px-4 py-2 rounded-md hover:bg-blue-50',
+				isActive ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600',
+				className
+			)}
+			aria-current={isActive ? 'page' : undefined}
+		>
+			{label}
+		</Link>
+	);
+};
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [scrolled, setScrolled] = useState(false);
+	const pathname = usePathname();
 
-  return (
-    <header className="border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-blue-500 to-orange-500 p-2 rounded-lg">
-              <Sun className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">
-              SolarReviews<span className="text-blue-500">Brasil</span>
-            </span>
-          </Link>
+	useEffect(() => {
+		const handleScroll = () => {
+			setScrolled(window.scrollY > 20);
+		};
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/empresas" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Empresas
-            </Link>
-            <Link href="/calculadora" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Calculadora Solar
-            </Link>
-            <Link href="/sobre" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Sobre
-            </Link>
-            <Link href="/contato" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Contato
-            </Link>
-          </nav>
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
-          {/* Search Bar */}
-          <div className="hidden md:flex items-center space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                type="text"
-                placeholder="Buscar empresas..."
-                className="pl-10 w-64"
-              />
-            </div>
-            <Button variant="outline">
-              Área da Empresa
-            </Button>
-          </div>
+	useEffect(() => {
+		setIsMenuOpen(false);
+	}, [pathname]);
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
+	return (
+		<header
+			className={cn(
+				'sticky top-0 w-full py-4 px-4 md:px-8 z-50 transition-all duration-300',
+				scrolled ? 'bg-white shadow-md' : 'bg-white/95 shadow-sm'
+			)}
+		>
+			<div className="container mx-auto flex justify-between items-center max-w-6xl">
+				{/* Logo with better accessibility */}
+				<Link
+					href="/"
+					className="flex items-center text-2xl font-bold text-blue-600 hover:text-blue-800 transition duration-300"
+				>
+					<Sun className="h-6 w-6 mr-2" aria-hidden="true" />
+					<span>Solar Review Brasil</span>
+				</Link>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-              <Link 
-                href="/empresas" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Empresas
-              </Link>
-              <Link 
-                href="/calculadora" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Calculadora Solar
-              </Link>
-              <Link 
-                href="/sobre" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sobre
-              </Link>
-              <Link 
-                href="/contato" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contato
-              </Link>
-              <div className="px-3 py-2">
-                <Input
-                  type="text"
-                  placeholder="Buscar empresas..."
-                  className="w-full"
-                />
-              </div>
-              <div className="px-3 py-2">
-                <Button variant="outline" className="w-full">
-                  Área da Empresa
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </header>
-  );
+				{/* Desktop Navigation */}
+				<nav className="hidden md:flex items-center space-x-1" aria-label="Navegação principal">
+					{navigationItems.map((item) => (
+						<NavLink key={item.href} {...item} />
+					))}
+
+					{specialLinks.map((item) => (
+						<NavLink key={item.href} {...item} className={cn('ml-2', item.className)} />
+					))}
+				</nav>
+
+				{/* Mobile Menu Button with improved accessibility */}
+				<Button
+					variant="ghost"
+					size="icon"
+					className="md:hidden text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+					onClick={() => setIsMenuOpen(!isMenuOpen)}
+					aria-expanded={isMenuOpen}
+					aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+				>
+					{isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+				</Button>
+			</div>
+
+			{/* Mobile Menu with animation */}
+			<AnimatePresence>
+				{isMenuOpen && (
+					<motion.nav
+						className="md:hidden bg-white py-4 px-4 shadow-inner border-t border-gray-100"
+						initial={{ opacity: 0, height: 0 }}
+						animate={{ opacity: 1, height: 'auto' }}
+						exit={{ opacity: 0, height: 0 }}
+						transition={{ duration: 0.3 }}
+						aria-label="Menu mobile"
+					>
+						<div className="flex flex-col space-y-2">
+							{navigationItems.map((item) => (
+								<NavLink key={item.href} {...item} isMobile />
+							))}
+
+							{specialLinks.map((item) => (
+								<NavLink key={item.href} {...item} isMobile className={item.className} />
+							))}
+						</div>
+					</motion.nav>
+				)}
+			</AnimatePresence>
+		</header>
+	);
 }

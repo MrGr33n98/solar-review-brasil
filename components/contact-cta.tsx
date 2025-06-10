@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-export default function ContactCTA() {
+export function ContactCTA() {
   return (
     <section className="bg-gradient-to-r from-blue-600 to-blue-700 py-16">
       <div className="container mx-auto px-4 text-center">
