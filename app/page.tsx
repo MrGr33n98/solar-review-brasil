@@ -1,11 +1,27 @@
 import type { Metadata } from 'next';
-import HomeClient from '@/components/home-client';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'SolarReviews Brasil - Avaliações de Empresas de Energia Solar',
-  description: 'Compare avaliações de empresas de energia solar e encontre o melhor instalador para seu projeto fotovoltaico.',
+  title: 'Solar Review Brasil',
+  description: 'Compare as melhores empresas de energia solar do Brasil',
 };
 
-export default function Home() {
-  return <HomeClient />;
+const LoadingSpinner = () => {
+  return React.createElement('div', {
+    className: 'min-h-screen flex items-center justify-center',
+    children: React.createElement('div', {
+      className: 'text-2xl text-gray-600',
+      children: 'Carregando...',
+    }),
+  });
+};
+
+const HomeClient = dynamic(() => import('@/components/home-client'), {
+  ssr: false,
+  loading: LoadingSpinner,
+});
+
+export default function Page() {
+  return React.createElement(HomeClient);
 }

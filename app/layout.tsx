@@ -4,6 +4,8 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
+import { AppProviders } from '@/components/providers';
+import { MotionProvider } from '@/components/layout/motion-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,12 +23,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster />
+        <MotionProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+        </MotionProvider>
       </body>
     </html>
   );

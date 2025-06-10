@@ -4,6 +4,66 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
+const PlanCard = ({ plan }: { plan: typeof plans[0] }) => {
+  const IconComponent = plan.icon;
+  return (
+    <Card className={`relative ${plan.popular ? 'ring-2 ring-blue-500 shadow-lg' : 'shadow-md'}`}>
+      {plan.popular && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+          <Badge className="bg-blue-500 text-white px-4 py-1">Mais Popular</Badge>
+        </div>
+      )}
+      <CardHeader className="text-center pb-4">
+        <div className={`w-16 h-16 ${plan.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
+          <IconComponent className={`h-8 w-8 ${plan.color}`} />
+        </div>
+        <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+        <CardDescription className="text-gray-600">{plan.description}</CardDescription>
+        <div className="mt-4">
+          <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
+          {plan.period && <span className="text-gray-600">{plan.period}</span>}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div>
+          <h4 className="font-semibold text-gray-900 mb-3">Recursos inclusos:</h4>
+          <ul className="space-y-2">
+            {plan.features.map((feature, index) => (
+              <li key={index} className="flex items-start space-x-2">
+                <Check className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                <span className="text-sm text-gray-700">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {plan.limitations && (
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-3">Limitações:</h4>
+            <ul className="space-y-2">
+              {plan.limitations.map((limitation, index) => (
+                <li key={index} className="flex items-start space-x-2">
+                  <span className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0">×</span>
+                  <span className="text-sm text-gray-500">{limitation}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <Button className={`w-full ${plan.popular ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-900 hover:bg-gray-800'}`}>
+          {plan.cta}
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
+const FAQItem = ({ question, answer }: { question: string; answer: string }) => (
+  <div>
+    <h3 className="font-semibold text-gray-900 mb-2">{question}</h3>
+    <p className="text-gray-600 text-sm">{answer}</p>
+  </div>
+);
+
 export default function PlanosPage() {
   const plans = [
     {
@@ -73,6 +133,13 @@ export default function PlanosPage() {
     }
   ];
 
+  const faqs = [
+    { question: 'Posso cancelar minha assinatura a qualquer momento?', answer: 'Sim, você pode cancelar sua assinatura a qualquer momento. Não há multas ou taxas de cancelamento.' },
+    { question: 'Como funciona o período de teste?', answer: 'Oferecemos 7 dias grátis do plano Premium para você testar todos os recursos antes de decidir.' },
+    { question: 'Posso fazer upgrade do meu plano?', answer: 'Sim, você pode fazer upgrade a qualquer momento. A cobrança será proporcional ao período restante.' },
+    { question: 'Há desconto para pagamento anual?', answer: 'Sim, oferecemos 20% de desconto para assinaturas anuais em todos os planos pagos.' },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -95,70 +162,9 @@ export default function PlanosPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Plans Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {plans.map((plan) => {
-            const IconComponent = plan.icon;
-            return (
-              <Card key={plan.name} className={`relative ${plan.popular ? 'ring-2 ring-blue-500 shadow-lg' : 'shadow-md'}`}>
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-blue-500 text-white px-4 py-1">
-                      Mais Popular
-                    </Badge>
-                  </div>
-                )}
-                
-                <CardHeader className="text-center pb-4">
-                  <div className={`w-16 h-16 ${plan.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                    <IconComponent className={`h-8 w-8 ${plan.color}`} />
-                  </div>
-                  <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                  <CardDescription className="text-gray-600">{plan.description}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                    {plan.period && <span className="text-gray-600">{plan.period}</span>}
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Recursos inclusos:</h4>
-                    <ul className="space-y-2">
-                      {plan.features.map((feature, index) => (
-                        <li key={index} className="flex items-start space-x-2">
-                          <Check className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {plan.limitations && (
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Limitações:</h4>
-                      <ul className="space-y-2">
-                        {plan.limitations.map((limitation, index) => (
-                          <li key={index} className="flex items-start space-x-2">
-                            <span className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0">×</span>
-                            <span className="text-sm text-gray-500">{limitation}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <Button 
-                    className={`w-full ${
-                      plan.popular 
-                        ? 'bg-blue-600 hover:bg-blue-700' 
-                        : 'bg-gray-900 hover:bg-gray-800'
-                    }`}
-                  >
-                    {plan.cta}
-                  </Button>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {plans.map((plan) => (
+            <PlanCard key={plan.name} plan={plan} />
+          ))}
         </div>
 
         {/* FAQ Section */}
@@ -166,43 +172,10 @@ export default function PlanosPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Perguntas Frequentes
           </h2>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Posso cancelar minha assinatura a qualquer momento?
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Sim, você pode cancelar sua assinatura a qualquer momento. Não há multas ou taxas de cancelamento.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Como funciona o período de teste?
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Oferecemos 7 dias grátis do plano Premium para você testar todos os recursos antes de decidir.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Posso fazer upgrade do meu plano?
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Sim, você pode fazer upgrade a qualquer momento. A cobrança será proporcional ao período restante.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Há desconto para pagamento anual?
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Sim, oferecemos 20% de desconto para assinaturas anuais em todos os planos pagos.
-              </p>
-            </div>
+            {faqs.map((faq, index) => (
+              <FAQItem key={index} {...faq} />
+            ))}
           </div>
         </div>
 
