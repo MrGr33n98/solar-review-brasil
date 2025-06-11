@@ -6,7 +6,8 @@ import {
   Settings,
   Users,
   FileText,
-  Gauge
+  Gauge,
+  Building
 } from 'lucide-react';
 
 export const dashboardConfig = {
@@ -20,11 +21,15 @@ export const dashboardConfig = {
       href: "/suporte",
     },
   ],
-  sidebarNav: [
-    {
+  sidebarNav: [    {
       title: "Overview",
       href: "/dashboard/empresa",
       icon: LayoutDashboard,
+    },
+    {
+      title: "Perfil",
+      href: "/dashboard/empresa/profile",
+      icon: Building,
     },
     {
       title: "Media",
