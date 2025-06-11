@@ -71,8 +71,8 @@ export default function DashboardOverview() {
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
-      <main className="flex-1 pb-6">
-        <div className="mx-2 sm:mx-4 lg:mx-6">
+      <main className="flex-1 pb-4">
+        <div className="mx-1 sm:mx-2">
           <DashboardHeader
             selectedPeriod={selectedPeriod}
             onPeriodChange={setSelectedPeriod}
@@ -80,10 +80,10 @@ export default function DashboardOverview() {
             insightMessage={contextualMessage}
           />
 
-          <div className="grid gap-4 sm:gap-6 mt-4 sm:mt-6">
+          <div className="grid gap-3 mt-3">
             <MetricCards metrics={mockMetrics} />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <CategoryDistribution categories={mockCategories} />
               <PerformanceSummary />
             </div>

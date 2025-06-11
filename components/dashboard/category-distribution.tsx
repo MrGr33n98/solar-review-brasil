@@ -1,78 +1,117 @@
 'use client';
 
-import { useMemo } from 'react';
-import { CogIcon } from '@heroicons/react/24/outline';
-import { CustomCard } from './custom-card';
+import * as React from 'react';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
-interface CategoryDistributionProps {
-  categories?: Array<{
-    name: string;
-    count: number;
-  }>;
+interface Category {
+  name: string;
+  count: number;
+  color?: string;
 }
 
-const defaultCategories = [
-  { name: 'Residencial', count: 145 },
-  { name: 'Comercial', count: 85 },
-  { name: 'Industrial', count: 23 },
-  { name: 'Usinas Solares', count: 12 },
-  { name: 'Manutenção', count: 56 },
-  { name: 'Sistemas Off-Grid', count: 18 },
-];
+interface CategoryDistributionProps {
+  categories: Category[];
+  className?: string;
+}
 
-export function CategoryDistribution({ categories = defaultCategories }: CategoryDistributionProps) {
-  const totalCount = useMemo(() => 
-    categories.reduce((sum, cat) => sum + cat.count, 0), 
+export function CategoryDistribution({ categories = [], className }: CategoryDistributionProps): React.JSX.Element {
+  const totalCount = React.useMemo(() => 
+    categories.reduce((sum, cat) => sum + cat.count, 0),
     [categories]
   );
 
-  const handleOptimizeCategory = (category: string) => {
-    console.log(`Otimizando categoria: ${category}`);
-  };
-
-  return (
-    <CustomCard className="p-4 sm:p-6">
-      <h2 className="text-xl font-semibold text-gray-800">Tipos de Instalação/Serviços Solares</h2>
-      <p className="text-gray-500 mb-4 text-sm">Número de orçamentos por categoria principal.</p>
-      
-      <div className="space-y-3">
-        {categories.map((category) => {
-          const percentage = ((category.count / totalCount) * 100).toFixed(1);
-          
-          return (
-            <div key={category.name} className="group">
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-700 font-medium text-sm">{category.name}</span>
-                  <button
-                    onClick={() => handleOptimizeCategory(category.name)}
-                    className="p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-gray-100 transition-all duration-200"
-                    title="Otimizar categoria"
-                  >
-                    <CogIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-800 font-semibold text-sm">
-                    {category.count}
-                  </span>
-                  <span className="text-gray-500 text-sm">
-                    ({percentage}%)
-                  </span>
-                </div>
-              </div>
-              
-              <div className="relative h-2">
-                <div className="absolute inset-0 bg-gray-200 rounded-full"></div>
-                <div 
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-transform origin-left"
-                  style={{ transform: `scaleX(${Number(percentage) / 100})` }}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </CustomCard>
-  );
+  return React.createElement(Card, {
+    className: cn('p-6', className)
+  }, [
+    React.createElement('div', {
+      key: 'header',
+      className: 'flex items-center justify-between mb-6'
+    }, [
+      React.createElement('div', { key: 'title' }, [
+        React.createElement('h2', {
+          className: 'text-lg font-semibold text-gray-800'
+        }, 'Tipos de Instalação'),
+        React.createElement('p', {
+          className: 'text-gray-500 text-xs'
+        }, 'Distribuição de orçamentos por categoria')
+      ])
+    ]),
+    React.createElement('div', {
+      key: 'categories',
+      className: 'space-y-4'
+    }, categories
+      .sort((a, b) => b.count - a.count)
+      .map((category) => {
+        const percentage = ((category.count / totalCount) * 100).toFixed(1);
+        return React.createElement('div', {
+          key: category.name,
+          className: 'space-y-2'
+        }, [
+          React.createElement('div', {
+            key: 'info',
+            className: 'flex justify-between items-center mb-1'
+          }, [
+            React.createElement('span', {
+              className: 'text-sm font-medium'
+            }, category.name),
+            React.createElement('span', {
+              className: 'text-sm text-muted-foreground'
+            }, `${category.count} (${percentage}%)`)
+          ]),
+          React.createElement('div', {
+            key: 'progress',
+            className: 'grid grid-cols-100 h-2'
+          }, [
+            React.createElement('div', {
+              className: cn(
+                'col-span-full h-2 rounded-full bg-gray-100 overflow-hidden'
+              ),
+              children: React.createElement('div', {
+                className: cn(
+                  'h-full transition-all duration-500 rounded-full',
+                  category.color || 'bg-blue-500'
+                ),
+                style: { gridColumnEnd: Math.round(parseFloat(percentage)) }
+              })
+            })
+          ])
+        ]);
+      })
+    ),
+    React.createElement('p', {
+      key: 'insight',
+      className: 'text-xs text-blue-600 mt-4'
+    }, [
+      'Insight: Projetos residenciais representam sua maior demanda. ',
+      React.createElement('a', {
+        key: 'insight-link',
+        href: '#otimizar-campanhas',
+        className: 'underline'
+      }, 'Ver dicas de marketing')
+    ])
+  ]);
 }
+
+export const mockCategories: Category[] = [
+  {
+    name: 'Residencial',
+    count: 145,
+    color: 'bg-blue-500'
+  },
+  {
+    name: 'Comercial',
+    count: 85,
+    color: 'bg-green-500'
+  },
+  {
+    name: 'Industrial',
+    count: 32,
+    color: 'bg-yellow-500'
+  },
+  {
+    name: 'Rural',
+    count: 28,
+    color: 'bg-purple-500'
+  },
+];
