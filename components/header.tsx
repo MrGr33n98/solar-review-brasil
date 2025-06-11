@@ -21,9 +21,8 @@ const specialLinks = [
 		href: '/calculadora',
 		label: 'Calculadora Solar',
 		className: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-	},
-	{
-		href: '/cadastre-sua-empresa',
+	},	{
+		href: '/auth/empresa/cadastro',
 		label: 'Para Empresas',
 		className: 'bg-blue-600 hover:bg-blue-700 text-white',
 	},

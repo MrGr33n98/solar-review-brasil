@@ -52,10 +52,8 @@ export const Header = function Header() {
               >
                 {link.label}
               </Link>
-            ))}
-            <Link
-              href="/cadastre-sua-empresa"
-              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-lg"
+            ))}            <Link href="/auth/empresa/cadastro"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Para Empresas
             </Link>
@@ -88,15 +86,14 @@ export const Header = function Header() {
                 { href: '/calculadora', label: 'Calculadora' },
                 { href: '/sobre', label: 'Sobre' },
                 { href: '/contato', label: 'Contato' },
-                { href: '/cadastre-sua-empresa', label: 'Para Empresas', special: true }
+                { href: '/auth/empresa/cadastro', label: 'Para Empresas', special: true }
               ].map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "block px-4 py-3 rounded-xl font-medium transition-all duration-300",
-                    link.special
-                      ? "bg-gradient-to-r from-green-600 to-green-700 text-white"
+                    "block px-4 py-3 rounded-xl font-medium transition-all duration-300",                    link.special
+                      ? "bg-blue-600 hover:bg-blue-700 text-white"
                       : "text-gray-700 hover:bg-gray-100"
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}

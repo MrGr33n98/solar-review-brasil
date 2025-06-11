@@ -9,6 +9,19 @@ import { BannerCarousel } from '@/components/banner-carousel';
 import { HowItWorks } from '@/components/how-it-works';
 import { ContactCTA } from '@/components/contact-cta';
 import dynamic from 'next/dynamic';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import Link from 'next/link';
 
 const Header = dynamic(
   () => import('./layout/header').then(mod => mod.Header),
@@ -29,6 +42,8 @@ export default function HomeContent() {
     if (location) searchParams.set('location', location);
     router.push(`/empresas?${searchParams.toString()}`);
   };
+
+  const [step, setStep] = useState('info');
 
   return (
     <>
@@ -83,6 +98,62 @@ export default function HomeContent() {
 
         {/* Contact CTA Section */}
         <ContactCTA />
+
+        {/* Company Registration Section */}
+        <main className="container mx-auto py-10">
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle>Cadastro de Empresa</CardTitle>
+              <CardDescription>
+                Cadastre sua empresa para começar a receber leads qualificados
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs value={step} onValueChange={setStep}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="info">Informações</TabsTrigger>
+                  <TabsTrigger value="access">Acesso</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="info">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Nome da Empresa</Label>
+                      <Input id="name" placeholder="Solar Energy LTDA" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="cnpj">CNPJ</Label>
+                      <Input id="cnpj" placeholder="00.000.000/0000-00" />
+                    </div>
+                    <Button onClick={() => setStep("access")}>Próximo</Button>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="access">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input id="email" type="email" placeholder="empresa@email.com" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Senha</Label>
+                      <Input id="password" type="password" />
+                    </div>
+                    <Button type="submit">Cadastrar</Button>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </main>
+
+        <div className="text-center py-10">
+          <Link href="/cadastre-sua-empresa">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Para Empresas
+            </Button>
+          </Link>
+        </div>
       </div>
       <Footer />
     </>

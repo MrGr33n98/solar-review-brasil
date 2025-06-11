@@ -34,7 +34,7 @@ export default function HomeClient() {
               backgroundImage: "url('/images/solar-panels-bg.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              filter: 'blur(12px) brightness(0.5)',
+              filter: 'blur(01px) brightness(0.9)',
               transform: 'scale(1.1)',
             }}
           />

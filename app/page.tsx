@@ -18,8 +18,7 @@ const LoadingSpinner = () => {
 };
 
 const HomeClient = dynamic(() => import('@/components/home-client'), {
-  ssr: false,
-  loading: LoadingSpinner,
+    loading: LoadingSpinner,
 });
 
 export default function Page() {
