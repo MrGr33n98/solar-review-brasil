@@ -7,23 +7,27 @@ import {
   Users,
   FileText,
   Gauge,
-  Building
+  Building,
+  Star,
+  UserSquare,
+  Zap,
+  Link2
 } from 'lucide-react';
 
-export const dashboardConfig = {
-  mainNav: [
+export const dashboardConfig = {  mainNav: [
     {
       title: "Dashboard",
-      href: "/dashboard/empresa",
+      href: "/dashboard/overview",
     },
     {
       title: "Suporte",
       href: "/suporte",
     },
   ],
-  sidebarNav: [    {
+  sidebarNav: [    
+    {
       title: "Overview",
-      href: "/dashboard/empresa",
+      href: "/dashboard/overview",
       icon: LayoutDashboard,
     },
     {
@@ -58,12 +62,22 @@ export const dashboardConfig = {
     {
       title: "Avaliações",
       href: "/dashboard/empresa/reviews",
-      icon: MessageSquare,
+      icon: Star,
     },
     {
       title: "Leads",
       href: "/dashboard/empresa/leads",
-      icon: Users,
+      icon: UserSquare,
+    },
+    {
+      title: "Desempenho",
+      href: "/dashboard/empresa/performance",
+      icon: Zap,
+    },
+    {
+      title: "Integrações",
+      href: "/dashboard/empresa/integrations",
+      icon: Link2,
     },
     {
       title: "Métricas",

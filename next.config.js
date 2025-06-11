@@ -17,6 +17,12 @@ const nextConfig = {
             },
         });
 
+        // Allow importing heroicons
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            '@heroicons/react/24/outline': '@heroicons/react',
+        };
+
         // Ensure consistent path casing
         config.resolve.symlinks = false;
 
