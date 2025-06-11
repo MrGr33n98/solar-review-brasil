@@ -7,6 +7,10 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    // Add percentage-based width classes for progress bars
+    ...Array.from({ length: 101 }, (_, i) => `w-[${i}%]`),
+  ],
   theme: {
     extend: {
       backgroundImage: {
