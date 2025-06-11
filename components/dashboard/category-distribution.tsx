@@ -5,13 +5,22 @@ import { CogIcon } from '@heroicons/react/24/outline';
 import { CustomCard } from './custom-card';
 
 interface CategoryDistributionProps {
-  categories: Array<{
+  categories?: Array<{
     name: string;
     count: number;
   }>;
 }
 
-export function CategoryDistribution({ categories }: CategoryDistributionProps) {
+const defaultCategories = [
+  { name: 'Residencial', count: 145 },
+  { name: 'Comercial', count: 85 },
+  { name: 'Industrial', count: 23 },
+  { name: 'Usinas Solares', count: 12 },
+  { name: 'Manutenção', count: 56 },
+  { name: 'Sistemas Off-Grid', count: 18 },
+];
+
+export function CategoryDistribution({ categories = defaultCategories }: CategoryDistributionProps) {
   const totalCount = useMemo(() => 
     categories.reduce((sum, cat) => sum + cat.count, 0), 
     [categories]
