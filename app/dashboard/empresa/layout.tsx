@@ -1,42 +1,45 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { DashboardNav } from '@/components/dashboard/nav';
 import { DashboardHeader } from '@/components/dashboard/header';
-import { TopMetrics } from '@/components/dashboard/metric-cards';
-import { PerformanceSummary } from '@/components/dashboard/performance-summary';
-import { CategoryDistribution } from '@/components/dashboard/category-distribution';
 import { dashboardConfig } from '@/config/dashboard';
 
 export default function DashboardLayout({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
-  const [selectedPeriod, setSelectedPeriod] = useState('30');
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <div className="flex h-full relative">
-        <DashboardNav items={dashboardConfig.sidebarNav} />
-        <div className="flex-1 flex flex-col min-h-screen">
-          <main className="flex-1 overflow-y-auto py-4">
-            <div className="mx-4 bg-white rounded-xl shadow-lg border border-gray-200">
-              <DashboardHeader
-                selectedPeriod={selectedPeriod}
-                onPeriodChange={setSelectedPeriod}
-                userName="Solar Brasil"
-                dynamicMessage="Acompanhe seu desempenho no Comparador Solar."
-              />
-              <div className="p-6 space-y-6">
-                <TopMetrics />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <CategoryDistribution />
-                  <PerformanceSummary />
-                </div>
-                {children}
-              </div>
+        {/* Sidebar - Removido fixed positioning */}
+        <DashboardNav
+          items={dashboardConfig.sidebarNav}
+          isCollapsed={isCollapsed}
+          onCollapse={() => setIsCollapsed(!isCollapsed)}
+          className={cn(
+            "h-screen sticky top-0 left-0 z-40",
+            "transition-all duration-300 ease-in-out",
+            isCollapsed ? "w-16" : "w-64",
+            "lg:block" // Sempre visível em desktop
+          )}
+        />
+        
+        {/* Main Content */}
+        <div className={cn(
+          "flex-1 flex flex-col min-h-screen",
+          "transition-all duration-300 ease-in-out",
+          isCollapsed ? "lg:ml-[64px]" : "lg:ml-[200px]",
+          "ml-0" // No margin on mobile
+        )}>
+          <DashboardHeader className="sticky top-0 z-30 w-full" />
+          <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+            <div className="mx-auto max-w-[2000px] w-full"> {/* Máximo width com margem automática */}
+              {children}
             </div>
           </main>
         </div>
